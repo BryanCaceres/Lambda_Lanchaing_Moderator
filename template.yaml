@@ -14,7 +14,40 @@ Globals:
       LogFormat: JSON
   Api:
     TracingEnabled: true
+
 Resources:
+  ModerationInputModel:
+    Type: AWS::ApiGateway::Model
+    Properties:
+      ContentType: application/json
+      RestApiId: !Ref ServerlessRestApi
+      Schema:
+        type: object
+        required:
+          - comment_body
+          - post_id
+          - post_name
+          - user_name
+        properties:
+          comment_body:
+            type: string
+            minLength: 1
+            maxLength: 5000
+          post_id:
+            type: integer
+            minimum: 1
+          post_name:
+            type: string
+            minLength: 1
+            maxLength: 200
+          user_name:
+            type: string
+            minLength: 1
+            maxLength: 100
+          post_url:
+            type: string
+            maxLength: 2083
+
   ModerateFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -29,6 +62,9 @@ Resources:
           Properties:
             Path: /moderate
             Method: post
+            RequestModel:
+              Model: !Ref ModerationInputModel
+              ValidateBody: true
       Environment:
         Variables:
           OPENAI_API_KEY: '{{resolve:ssm:/prod/openai/api-key:1}}'

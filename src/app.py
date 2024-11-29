@@ -1,5 +1,5 @@
 import json
-from src.services.agent_general_moderation import GeneralModeration
+from services.agent_general_moderation import GeneralModeration
 import traceback
 
 general_moderator = GeneralModeration()
@@ -10,9 +10,9 @@ def lambda_handler(event, context):
     """
     try:
         request_body = json.loads(event["body"])
-        input_text = request_body.get("input_text", "")
+        comment_body = request_body.get("comment_body", "")
 
-        model_response = general_moderator.moderate(input_text)
+        model_response = general_moderator.moderate(comment_body)
 
         return {
             "statusCode": 200,
