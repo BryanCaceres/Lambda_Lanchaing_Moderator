@@ -1,5 +1,5 @@
-from .promt_general_moderator import GeneralModerator
+from .promt_general_moderator import GeneralModeratorPromt
 
 __all__ = [
-    "GeneralModerator"
+    "GeneralModeratorPromt"
 ]

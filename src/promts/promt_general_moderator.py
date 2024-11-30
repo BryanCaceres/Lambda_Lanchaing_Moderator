@@ -1,14 +1,13 @@
 from langchain_core.prompts import PromptTemplate
 from promts.promts_interface import PromptsInterface
 
-class GeneralModerator(PromptsInterface):
+class GeneralModeratorPromt(PromptsInterface):
     def get_promt(self) -> PromptTemplate:
         template_text = """
-            <role> I want you to respond as an expert moderator of comments in posts in online communities, with extensive experience in rigorously applying a series of rules to each comment that will be published. You are the first validator in a moderation chain, so your role is more about alerting things that potentially violate community rules rather than being completely precise. 
+            <role> 
+            You are an expert moderator of comments on posts in online communities.
             </role>
-
             <task> I will provide a comment made on a post within our online community. You must check that the comment does not violate any of these rules that I will mention. First is the name of the rule, and second is the description of the rule.
-
             hateSpeech: Any form of hate speech is not allowed, including comments that attack or degrade people or groups based on their race, ethnicity, nationality, religion, sexual orientation, gender, gender identity, disability, or illness.
 
             harassmentBullying: Harassment or bullying towards other users is not allowed. This includes threats, insults, derogatory comments, or any conduct intended to annoy or hurt someone.
@@ -52,10 +51,15 @@ class GeneralModerator(PromptsInterface):
             In the JSON, there is a key called “evidence”; in “evidence,” you must include the full paragraph of the comment text where the violation to the rule or broken rules of the platform occurs. It is an easy way to know where the violation occurred.
 
             Remember that when in doubt, indicate things as true and provide well-founded arguments; then there are experts in each rule who will validate in more detail.
-
+            <tools>
+            You have access to the following tools:
+                {tools}
+            When you need to verify the meaning or context of words or phrases, use the web_search tool. 
+            </tools>
             </details> 
             <input> 
-                The comment to moderate is: {comment_body} 
+                The comment to moderate is: 
+                {comment_body} 
             </input> 
             <chainOfThought>
                 1-First, evaluate if the comment violates any of the rules; then, identify if there is a need to moderate based on those violations. 
@@ -65,6 +69,14 @@ class GeneralModerator(PromptsInterface):
             {reward}
             {security_instructions}
             {output_language}
+            <instructions>
+                If you cannot find specific information after 2 attempts, 
+                assume that the term does not exist or is not relevant to the moderation.
+                Do not make more than 2 searches for the same term.
+            </instructions>
+            <scratchpad>
+            {agent_scratchpad}
+            </scratchpad>
             """
         return PromptTemplate(
             input_variables=["comment_body"],
