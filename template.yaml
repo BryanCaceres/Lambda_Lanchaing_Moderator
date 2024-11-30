@@ -71,6 +71,7 @@ Resources:
           DEFAULT_OPEN_AI_MODEL: '{{resolve:ssm:/prod/openai/model:1}}'
           DEFAULT_TEMPERATURE: '{{resolve:ssm:/prod/openai/temperature:1}}'
           DEFAULT_MAX_TOKENS: '{{resolve:ssm:/prod/openai/max-tokens:1}}'
+          TAVILY_API_KEY: '{{resolve:ssm:/prod/tavily/api-key:1}}'
 
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
