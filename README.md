@@ -12,7 +12,7 @@ Start the Local Server with Endpoints Configured in template.yaml
 This allows you to test the endpoints locally.
 
 ```bash
-sam local start-api --port 3003 --env-vars env.json
+sam local start-api --port 3004 --env-vars env.json
 ```
 
 # Deploy the Project on AWS

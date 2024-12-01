@@ -1,8 +1,8 @@
 import json
-from services.agent_general_moderation import GeneralModeration
 import traceback
+from services import CommentModerationService
 
-general_moderator = GeneralModeration()
+moderation_service = CommentModerationService()
 
 def lambda_handler(event, context):
     """
@@ -10,14 +10,12 @@ def lambda_handler(event, context):
     """
     try:
         request_body = json.loads(event["body"])
-        comment_body = request_body.get("comment_body", "")
-
-        model_response = general_moderator.moderate(comment_body)
+        moderation_result = moderation_service.execute_moderation(request_body)
 
         return {
             "statusCode": 200,
             "body": json.dumps({
-                "model_response": model_response
+                "moderation_result": moderation_result
             })
         }
     except Exception as e:
