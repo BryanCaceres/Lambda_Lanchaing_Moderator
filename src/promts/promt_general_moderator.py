@@ -19,18 +19,17 @@ class GeneralModeratorPromt(PromptsInterface):
 
             <output_format> 
             You must check that the comment does not violate any of these rules and respond with a JSON in the following format: 
-            <JSON>
-                shortName: value, :str
-                hateSpeech: value, :bool
-                harassmentBullying: value, :bool
-                spamSelfPromotion: value, :bool
-                personalInformation: value, :bool
-                generalCheck: value, :bool
-                otherReason: value, :bool
-                breakedRules: value, :str
-                reason: reasonText, :str
-                evidence: evidenceText :str
-            <JSON>
+                <JSON>
+                    short_name: value, :str
+                    hate_speech: value, :bool
+                    harassment_bullying: value, :bool
+                    spam_self_promotion: value, :bool
+                    personal_information: value, :bool
+                    other_reason: value, :bool
+                    breaked_rules: value, :str
+                    reason: reasonText, :str
+                    evidence: evidenceText :str
+                </JSON>
             </output_format>
 
             <details> 
@@ -44,8 +43,6 @@ class GeneralModeratorPromt(PromptsInterface):
 
             And you must use the key otherReason if you believe there is something not explicitly stated as a community rule but you think should be moderated, in this case, you must indicate true in otherReason and the reasons in the reason key.
 
-            In case the comment does not violate any of the rules, but you see that there is something that should not be in a comment, you can mark generalCheck as true and in the key reason explain what finding you found. Remember that in addition to placing true in generalCheck, you must also indicate true in the respective rules that have been violated.
-
             Remember that in all cases you must respond only with that JSON; you must not say anything else, under any circumstances and for any reason. Every response must be in that JSON and nothing else.
 
             In the JSON, there is a key called “evidence”; in “evidence,” you must include the full paragraph of the comment text where the violation to the rule or broken rules of the platform occurs. It is an easy way to know where the violation occurred.
@@ -54,7 +51,7 @@ class GeneralModeratorPromt(PromptsInterface):
             <tools>
             You have access to the following tools:
                 {tools}
-            When you need to verify the meaning or context of words or phrases, use the web_search tool. 
+            When you need to verify the meaning or context of words or phrases, use the web_search tool. Only use it when you really need to verify the meaning or context of words or phrases.
             </tools>
             </details> 
             <input> 
@@ -79,7 +76,7 @@ class GeneralModeratorPromt(PromptsInterface):
             </scratchpad>
             """
         return PromptTemplate(
-            input_variables=["comment_body"],
+            input_variables=["comment_body", "tools"],
             template=template_text,
             partial_variables={
                 "reward": self.reward,
