@@ -3,6 +3,7 @@ from .agent_interface import AIAgentInterface
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 from tools import tavily_search
 import logging
+from langsmith import traceable
 
 agent_promt_template = GeneralModeratorPromt()
 
@@ -13,6 +14,7 @@ class GeneralModerationAgent(AIAgentInterface):
         self._set_agent_config(run_name="general_moderation_agent")
         self.general_moderator_promt = agent_promt_template.get_promt()
 
+    @traceable
     def moderate(self, comment: str) -> dict:
         """
         Execute the general moderation agent

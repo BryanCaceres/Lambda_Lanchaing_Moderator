@@ -1,10 +1,12 @@
 from agents import GeneralModerationAgent, HatespeechExpertAgent
+from langsmith import traceable
 
 class CommentModerationService:
     def __init__(self):
         self.general_moderator = GeneralModerationAgent()
         self.hatespeech_expert = HatespeechExpertAgent()
     
+    @traceable
     def execute_moderation(self, execution_info: dict) -> dict:
         """
         Execute the moderation process with de diferent agents

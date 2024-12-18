@@ -3,6 +3,7 @@ from .agent_interface import AIAgentInterface
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 from tools import tavily_search
 import logging
+from langsmith import traceable
 
 agent_promt_template = HatespeechExpertPromt()
 
@@ -13,6 +14,7 @@ class HatespeechExpertAgent(AIAgentInterface):
         self.hatespeech_expert_promt = agent_promt_template.get_promt()
         self.tools = [tavily_search.tool]
 
+    @traceable
     def moderate(self, comment_body: str, moderation_name: str, moderation_reason: str, infraction_evidence: str) -> dict:
         """
         Execute the hatespeech expert agent

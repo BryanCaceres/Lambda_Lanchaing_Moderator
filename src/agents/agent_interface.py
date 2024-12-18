@@ -3,6 +3,7 @@ from core.settings import settings
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.runnables import RunnableConfig
+from langsmith import traceable
 
 class AIAgentInterface(ABC):
     def __init__(self):
